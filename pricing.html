@@ -14,7 +14,7 @@ function Checkout(pricingRules) {
 		this.items = [];
 	}
 
-	//add item(item can either array or string)
+	//add item(item can be either array or string)
 	this.scan = (item) => {
 		if (Array.isArray(item)) {
 			this.items = [...this.items, ...item];
@@ -33,7 +33,7 @@ function Checkout(pricingRules) {
 			vga: 0
 		};
 
-		//calculate
+		//calculate the count of each item
 		for (each of this.items) {
 			cnt[each] ++;
 		}
@@ -50,7 +50,7 @@ function Checkout(pricingRules) {
 		// calculate total price of vga
 		sum += (cnt.vga - cnt.mbp) * this.pricingRules.vga;
 
-		document.(`Total cost is $${sum}`);
+		console.log(`Total cost is $${sum}`);
 	}
 }
 
