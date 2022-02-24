@@ -1,0 +1,81 @@
+<script>
+/**
+ * This class implements checkout system.
+ * We can use class{} in javascript but this constructor function is also the same as class. 
+ * It has 2 properties, pricingRules and items.
+ **/
+function Checkout(pricingRules) {
+	
+	this.pricingRules = pricingRules;
+	this.items = [];
+
+	//clear item list
+	this.refreshItems = () => {
+		this.items = [];
+	}
+
+	//add item(item can either array or string)
+	this.scan = (item) => {
+		if (Array.isArray(item)) {
+			this.items = [...this.items, ...item];
+		} else {
+			this.items.push(item);
+		}
+	}
+
+	//calculate the total price
+	this.total = () => {
+		let sum = 0;
+		let cnt = {
+			ipd: 0,
+			mbp: 0,
+			atv: 0,
+			vga: 0
+		};
+
+		//calculate
+		for (each of this.items) {
+			cnt[each] ++;
+		}
+
+		// calculate total price of atv
+		sum += (parseInt(cnt.atv / 3) * 2 + cnt.atv % 3) * this.pricingRules.atv;
+
+		// calculate total price of ipd
+		sum += cnt.ipd * (cnt.ipd > 4 ? 499.99 : this.pricingRules.ipd )
+
+		// calculate total price of mbp(and attaced vga)
+		sum += cnt.mbp * (this.pricingRules.mbp + this.pricingRules.vga);
+
+		// calculate total price of vga
+		sum += (cnt.vga - cnt.mbp) * this.pricingRules.vga;
+
+		document.(`Total cost is $${sum}`);
+	}
+}
+
+const pricingRules = {
+	ipd: 549.99,
+	mbp: 1399.99,
+	atv: 109.5,
+	vga: 30
+}
+
+const co = new Checkout(pricingRules);
+
+co.scan("atv");
+co.scan("atv");
+co.scan("atv");
+co.scan("vga");
+co.total();
+co.refreshItems();
+
+items = ["atv", "ipd", "ipd", "atv", "ipd", "ipd", "ipd"];
+co.scan(items);
+co.total();
+co.refreshItems();
+
+items = ["mbp", "vga", "ipd"];
+co.scan(items);
+co.total();
+</script>
